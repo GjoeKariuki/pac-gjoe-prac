@@ -1,9 +1,9 @@
 # build orthanc server - done
-# orthanc-with-plugins-enabled
+# orthanc-with-plugins-enabled - done
 # add POSTGRESQL Support - done
 # integrate with OHIF viewer - done
 # nginx deployment - done
-# add pgadmin for postgres
+# add pgadmin for postgres - done
 # tests and healthchecks
 
 version: "3.8"
@@ -66,10 +66,11 @@ services:
   ohif:
     # container_name: ohif-viewer-prototype
     # image: ohif/viewer
-    build: ohif-viewer
+    build: ohif
     # optional if you want to customize the OHIF configuration:
     volumes:
-      - ./ohif/default-app-config.js:/usr/share/nginx/html/app-config.js
+      - ./ohif/default-app-config.js:/usr/share/nginx/html/app-config.js:ro
+      - ./logo.png:/usr/share/nginx/html/logo.png:ro
     restart: unless-stopped
     depends_on:
       - orthanc-container
@@ -82,8 +83,22 @@ services:
     environment:
       POSTGRES_HOST_AUTH_METHOD: "trust"
 
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@root.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5051:5051"
+
   nginx:
-    build: nginx
+    # build: nginx
+    image: nginx:latest
+    container_name: nginx-container
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d
     restart: unless-stopped
     ports:
       - 80:80

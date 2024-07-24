@@ -3,8 +3,14 @@ Prototype Development and Image Viewer Integration
 Reporting Module Conceptualization
 
 
+
+
 Deliverables:
     Comparative analysis of selected os
     source code + documentation for Prototype
     design documentation
     configuration and documentation for implemented CI/CD pipelines
+
+
+
+Pending: Unit & Integration Tests

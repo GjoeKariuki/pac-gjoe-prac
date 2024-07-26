@@ -43,6 +43,3 @@ jobs:
         run: |
           pip install pytest requests psycopg2 psycopg2-binary
           pytest tests/
-
-    volumes:
-      docker-test-data:

@@ -31,7 +31,7 @@ jobs:
           pip install pytest requests psycopg2 psycopg2-binary selenium
       - name: Run tests
         run: |
-          pytest
+          pytest tests/
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up Docker Buildx

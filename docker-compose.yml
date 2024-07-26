@@ -4,7 +4,7 @@
 # integrate with OHIF viewer - done
 # nginx deployment - done
 # add pgadmin for postgres - done
-# tests and healthchecks
+# tests and healthchecks - done
 
 version: "3.8"
 services:
@@ -29,6 +29,13 @@ services:
         }
 
       VERBOSE_STARTUP: "true"
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4242/"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
 
   orthanc-plugin:
     image: orthancteam/orthanc:24.7.3
@@ -63,6 +70,12 @@ services:
 
       VERBOSE_STARTUP: "true"
 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8042"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
   ohif:
     # container_name: ohif-viewer-prototype
     # image: ohif/viewer
@@ -75,6 +88,13 @@ services:
     depends_on:
       - orthanc-container
 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/ohif/"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
+
   orthanc-index:
     image: postgres:15
     restart: unless-stopped
@@ -82,6 +102,13 @@ services:
     volumes: ["orthanc-index:/var/lib/postgresql/data"]
     environment:
       POSTGRES_HOST_AUTH_METHOD: "trust"
+
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
 
   pgadmin:
     container_name: pgadmin4
@@ -106,6 +133,13 @@ services:
       - orthanc-container
       - orthanc-plugin
       - ohif
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
 
 volumes:
   orthanc-storage:

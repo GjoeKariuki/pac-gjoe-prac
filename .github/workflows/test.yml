@@ -29,6 +29,6 @@ jobs:
           pip install pytest requests psycopg2 psycopg2-binary selenium
       - name: Run tests
         run: |
-          pytest .\tests\nginx-tests.py
-          pytest .\tests\ohif-tests.py
-          pytest .\tests\orthanc-tests.py
+          pytest ./tests/nginx-tests.py
+          pytest ./tests/ohif-tests.py
+          pytest ./tests/orthanc-tests.py
